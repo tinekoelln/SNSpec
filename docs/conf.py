@@ -1,27 +1,18 @@
-# Configuration file for the Sphinx documentation builder.
-#
-# For the full list of built-in configuration values, see the documentation:
-# https://www.sphinx-doc.org/en/master/usage/configuration.html
+from datetime import datetime
 
-# -- Project information -----------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+project = "SNSpec"
+author = "Cristine Koelln"
+copyright = f"{datetime.now():%Y}, {author}"
+release = "0.0.0"
 
-project = 'SupernovaSpectra'
-copyright = '2025, Cristine Koelln'
-author = 'Cristine Koelln'
-
-# -- General configuration ---------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
-
-extensions = []
-
-templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
-
-
-
-# -- Options for HTML output -------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
-
-html_theme = 'alabaster'
-html_static_path = ['_static']
+extensions = []  # keep empty for first build; add autodoc later
+templates_path = ["_templates"]
+exclude_patterns = ["_build"]
+html_theme = "furo"
+html_static_path = ["_static"]
+# If you later enable autodoc, you can also add:
+# extensions += ["sphinx.ext.autodoc", "sphinx.ext.autosummary", "sphinx.ext.napoleon", "sphinx.ext.viewcode"]
+# autosummary_generate = True
+# autodoc_typehints = "description"
+# autodoc_default_options = {"members": True, "undoc-members": True, "show-inheritance": True}
+# autodoc_mock_imports = ["astropy", "specutils", "numpy", "scipy", "pandas", "matplotlib", "scienceplots"]
