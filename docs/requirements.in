@@ -5,3 +5,7 @@ astropy
 specutils
 scipy
 scienceplots
+sphinx
+furo
+sphinx-autodoc-typehints
+
