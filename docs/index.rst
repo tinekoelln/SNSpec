@@ -1,5 +1,7 @@
 SNSpec documentation
 ====================
 
-This site is under construction. 🚧
+.. toctree::
+   :maxdepth: 2
 
+   api/index
