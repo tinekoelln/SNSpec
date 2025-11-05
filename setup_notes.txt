@@ -1,0 +1,63 @@
+# Single SNe Python Environment Setup Notes
+
+## Folder setup
+- Created project directory at ~/code/single_sne
+- Inside, created subfolders: src/single_sne, scripts, tests
+  → These separate the main code, helper scripts, and tests.
+
+## Virtual Environment
+- Created a virtual environment with:
+    /opt/homebrew/bin/python3.13 -m venv .venv
+- Activated it:
+    source .venv/bin/activate
+- Verified correct interpreter with:
+    which python
+    python -V
+- Why: isolates dependencies per project, avoids version conflicts.
+It's important to keep the environment inside of the project folder, not clobally, so that deleting the folder removes everything related to the project in question. 
+
+## Running scripts
+- Wrote first Python script (scripts/hello.py)
+- Ran it directly with `python scripts/hello.py`
+- Output shows interpreter path and confirms venv works
+
+## Actually using scientific packages: 
+install core scientific packages via
+python -m pip install --upgrade pip
+python -m pip install numpy matplotlib astropy pandas scipy specutils scienceplots  #add whatever other packages are needed
+Always freeze dependencies via
+ python -m pip freeze > requirements.txt 
+this way, anyone (including future me) can recreate the environment with python -m pip install -r requirements.txt
+
+##Creating a project CLI
+
+CLI stands for Command-Line interface, it's the part of a program one can run and control from the terminal. This makes the project behave as a real tool instead
+of several disconnected scripts. One can then pass arguments (filenames, options, filters) from the terminal without having to edit the script each and every time
+It also helps structure the project cleanly (src/single_sne/ holds logic, scripts/ just calls it). Lastly, if I ever share the code, it can be easily run with one
+command. 
+
+To make the package installable, one can do the following. First, create a minimal pyproject.toml:
+cat > pyproject.toml << 'TOML'
+[project]
+name = "single-sne"
+version = "0.0.1"
+requires-python = ">=3.11"
+dependencies = []
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+TOML
+
+#Step 2: Install package in editable mode: pip install -e .
+
+## convert-fnu CLI command
+- Created new module snspec.py with to_fnu_mjy()
+- Added subcommand: single-sne convert-fnu --infile ... --outfile ...
+- Tested conversion using spec.txt -> spec_mjy.txt
+
+
+##using micro: CONTROL S to save, cmd S does not work

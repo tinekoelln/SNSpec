@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=68", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "single-sne"
+# version is generated from Git tags by setuptools-scm:
+dynamic = ["version"]
+description = "Small utilities for single SNe spectra (CLI + library)"
+readme = "README.md"
+# Recommend widening Python a bit so colleagues/envs can install it.
+requires-python = ">=3.10"
+
+authors = [{ name = "Your Name" }]
+license = { text = "Proprietary" }  # or "BSD-3-Clause", etc.
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "License :: Other/Proprietary License",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Astronomy",
+]
+
+dependencies = [
+  "numpy>=2.0",
+  "pandas>=2.2",
+  "matplotlib>=3.8",
+  "astropy>=6.0",
+  "specutils>=2.1",   # you’re using Spectrum (new API)
+  "scipy>=1.11",
+  "scienceplots>=2.1",
+]
+
+[project.optional-dependencies]
+docs = [
+  "sphinx>=7",
+  "furo>=2024.8.6",
+  "sphinx-autodoc-typehints>=2.3",
+]
+dev = [
+  "pytest>=8",
+  "pytest-cov>=5",
+  "ruff>=0.6",
+  "black>=24.0",
+  "ipython>=8",
+]
+
+[project.scripts]
+single-sne = "single_sne.cli:main"
+
+[project.urls]
+Homepage = "https://example.com"          # optional
+Repository = "https://github.com/<you>/single_sne"   # fill in later
+Documentation = "https://<your-rtd-pro-domain>/projects/single_sne"  # optional
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools_scm]
+# Picks version like 0.2.1 from your latest git tag "v0.2.1" or "0.2.1".
+version_scheme = "guess-next-dev"
+local_scheme = "node-and-date"
+fallback_version = "0.0.0"
+
+# Optional: include any non-Python files under src/single_sne/** if you have templates/data
+# [tool.setuptools.package-data]
+# "single_sne" = ["data/*", "templates/*"]

@@ -1,0 +1,12 @@
+Metadata-Version: 2.4
+Name: single-sne
+Version: 0.0.1
+Summary: Small utilities for single SNe spectra (CLI + library)
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=2.3
+Requires-Dist: pandas>=2.3
+Requires-Dist: matplotlib>=3.8
+Requires-Dist: astropy>=7.0
+Requires-Dist: specutils>=2.1
+Requires-Dist: scipy>=1.14

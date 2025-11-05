@@ -1,0 +1,2 @@
+[console_scripts]
+single-sne = single_sne.cli:main

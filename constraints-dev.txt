@@ -1,0 +1,6 @@
+# Freeze build tooling so pip-compile works reliably
+pip==24.2
+pip-tools==7.4.1
+sphinx==7.3.7
+furo==2024.1.29
+sphinx-autodoc-typehints==2.2.1
