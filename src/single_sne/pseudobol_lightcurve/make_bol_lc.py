@@ -264,7 +264,7 @@ def _interp_mag_gp(
     tau = np.log(t_rel)
     tau_star = np.log(x_rel)
 
-    # normalise tau a bit
+    # normalize tau a bit
     tau0 = tau.mean()
     tau_norm = (tau - tau0)[:, None]
     tau_star_norm = (tau_star - tau0)[:, None]
