@@ -30,6 +30,7 @@ dependencies = [
   "scipy>=1.11",
   "scienceplots>=2.1",
   "requests>=2.31",
+  "beautifulsoup4>=4.12",
 ]
 
 [project.optional-dependencies]
