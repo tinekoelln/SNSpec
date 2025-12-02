@@ -22,10 +22,14 @@ def test_stitch_basic_edge_join():
     import numpy as np, astropy.units as u
     w1 = np.linspace(500, 560, 61) * u.nm
     f1 = np.ones_like(w1.value) * 10 * (u.erg / (u.s * u.cm**2 * u.AA))
+    err1 = (np.random.normal(loc=1.0, scale=0.2, size=w1.size)
+        * u.erg / (u.s * u.cm**2 * u.AA))
     w2 = np.linspace(540, 620, 81) * u.nm
     f2 = np.ones_like(w2.value) * 5 * (u.erg / (u.s * u.cm**2 * u.AA))
+    err2 = (np.random.normal(loc=1.0, scale=0.2, size=w2.size)
+        * u.erg / (u.s * u.cm**2 * u.AA))
 
-    w, f, s = stitch_arms(w1, f1, w2, f2, overlap=(545, 555)*u.nm, stitch_edge=555*u.nm)
+    w, f, err, s = stitch_arms(w1, f1,err1, w2, f2, err2, overlap=(545, 555)*u.nm, stitch_edge=555*u.nm)
     assert np.isclose(s, 2.0)
     assert np.all(w.to(u.nm).value[:-1] < w.to(u.nm).value[1:])
     # Left of edge equals left flux
