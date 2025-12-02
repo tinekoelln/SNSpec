@@ -4,11 +4,12 @@ from single_sne.io.lightcurves import read_lightcurve, find_lightcurve
 from single_sne.plotting.lightcurves import plot_lightcurves
 from single_sne.lightcurves.lightcurves import get_and_plot_lightcurves
 from pathlib import Path
-
+from single_sne.plotting.plot_helpers import setup_science_style  # wherever you put it
+setup_science_style() 
 # Base directory for test data (relative to THIS file)
 DATA_DIR = Path(__file__).parent / "tests_data"
 def test_lightcurve():
-    path = DATA_DIR / "/sn2025ifq.txt"
+    path = DATA_DIR / "sn2025ifq.txt"
     lightcurve = read_lightcurve(path)
     
     assert isinstance(lightcurve, pd.DataFrame)
