@@ -92,7 +92,7 @@ def test_sorted_filters_sn2002bo():
         
     
     
-def test_mklcbol_sn2002bo():
+def test_mklcbol_sn2002bo(tmp_path):
     """
     Run mklcbol on the sn2002bo test file and produce a plot of L_bol vs t.
 
@@ -110,11 +110,10 @@ def test_mklcbol_sn2002bo():
 
     assert infile.exists(), f"Input file not found: {infile}"
     assert pbinfo.exists(), f"pbinfo file not found: {pbinfo}"
-    tmp_path = Path(DATA_DIR)
-    tmp_path.mkdir(parents=True, exist_ok=True)
+
     # Output bolometric LC file will be written into a temporary directory
     fout = tmp_path / "sn2002bo_lcbol_gauss.dat"
-
+    tmp_path.mkdir(parents=True, exist_ok=True)
     # ------------------------------------------------------------------
     # 2. Run mklcbol
     # ------------------------------------------------------------------
