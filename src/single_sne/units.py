@@ -5,7 +5,7 @@ import numpy as np
 XSH_WAVE_UNIT = u.nm
 
 # Native XShooter flux (F_lambda)
-XSH_FLUX_UNIT = u.Unit("erg / (cm**2 s Angstrom)")
+XSH_FLUX_UNIT = u.erg / (u.s * u.cm**2 * u.AA)
 
 INSTRUMENT_UNITS = {
     "JWST":      (u.um, u.mJy),
