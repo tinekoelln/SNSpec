@@ -55,7 +55,7 @@ def read_jwst_df(path: PathLike, as_quantity: bool = True, debug = False) -> pd.
 
     # Basic sanity: at least 2 columns remaining
     if not {"wavelength_um", "flux_mJy"}.issubset(df.columns):
-                raise ValueError(f"Expected at least two numeric columns in {p}")
+                raise ValueError(f"Expected at least two numeric columns in {df}, got {df.columns}")
 
     if as_quantity:
             # Replace float columns by Quantity columns (pandas Series of Quantity)
