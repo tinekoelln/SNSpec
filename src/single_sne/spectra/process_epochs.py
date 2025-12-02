@@ -141,7 +141,7 @@ def process_epoch(
         telescopes_listed.append("JWST")
         if debug: print(f"Beginning JWST Handling")
         for datafile in _iter_files(jw, patterns = ("*.dat",)):
-            if debug: print(f"[DEBUG]: JWST files: {list(_iter_files(jw, patterns = ("*.dat",)))}")
+            if debug: print(f"[DEBUG]: JWST files: {list(_iter_files(jw, patterns = ('*.dat',)))}")
             try:
                 if debug: print(f"[DEBUG] Getting JWST wavelengths and fluxes...")
                 w_jw, f_jw, _ = read_jwst_arrays(datafile, debug=debug)       # Quantities
