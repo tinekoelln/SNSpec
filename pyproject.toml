@@ -29,7 +29,7 @@ dependencies = [
   "specutils>=2.1",   # you’re using Spectrum (new API)
   "scipy>=1.11",
   "scienceplots>=2.1",
-  requests>=2.31,
+  "requests>=2.31",
 ]
 
 [project.optional-dependencies]
