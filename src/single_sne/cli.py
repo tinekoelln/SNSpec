@@ -19,7 +19,6 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("-v", "--verbose", action="count", default=0, help="Increase verbosity (-v, -vv)")
     sub = p.add_subparsers(dest="command", required=True)
 
-   
     # convert-fnu
     from .cli_handlers import cmd_convert_fnu
     pc = sub.add_parser("convert-fnu", help="Convert fλ (erg/s/cm²/Å) to fν (mJy)")
@@ -32,7 +31,7 @@ def build_parser() -> argparse.ArgumentParser:
     from .cli_handlers import cmd_bin_spectrum
     pb = sub.add_parser("bin-spectrum", help="Flux-conserving binning of a 2–3 col ASCII spectrum (wavelength, flux[, flux_err]).")
 
-    pb.add_argument("infile", nargs="?", default="-", help="Input 2–3 col ASCII (λ, flux[, σ]). Use '-' for stdin. Lines starting with '#' are ignored.")
+    pb.add_argument("singlee", nargs="?", default="-", help="Input 2–3 col ASCII (λ, flux[, σ]). Use '-' for stdin. Lines starting with '#' are ignored.")
     pb.add_argument("outfile", nargs="?", default="-", help="Output 2–3 col ASCII. Use '-' for stdout.")
 
     pb.add_argument("--bin-size", type=float, required=True,help="Bin width in wave_unit (must be > 0).")
@@ -73,10 +72,15 @@ def build_parser() -> argparse.ArgumentParser:
     sx = sub.add_parser("xsh-merge-plot", help="Discover, rebin, stitch, and plot X-shooter MERGE1D arms")
     
     sx.add_argument("--root", default=".", help="Search root directory")
-    sx.add_argument("--out-dir",default=".", help="Directory to write output files (default: current directory).")
+    sx.add_argument("--outdir",default= None, help="Directory to write output files (default: current directory).")
     sx.add_argument("--product-mode", choices=["SCI", "TELL", "ANY"], default="SCI", help="Which MERGE1D products to use")
     sx.add_argument("--no-prefer-end", action="store_true", help="Do NOT prefer files under reflex_end_products")
     sx.add_argument("--allow-tmp", action="store_true", help="Include reflex_tmp_products/response directories")
+    sx.add_argument("--clean", action="store_true", help="If set, pixels flagged by the QUAL mask in XSHOOTER FITS files will be filtered out.")
+    sx.add_argument("--show", action="store_true", help="If set, plots will be shown as pop-up window.")
+    sx.add_argument("--snr", action="store_true", help="If set, plots will have a subfigure showing the SNR")
+    sx.add_argument("--unbinned", action="store_true", help="If set, will also save unbinned version of the spectrum")
+    sx.add_argument("--etc", action="store_true", help="If set, will also calculate the SNR per spectral bin as provided by the ETC")
 
     # bin widths (nm)
     sx.add_argument("--dw-uvb", type=float, default=0.3, help="UVB bin width [nm]")
@@ -92,6 +96,53 @@ def build_parser() -> argparse.ArgumentParser:
     sx.add_argument("--out", default="", help="Output basename (default: from header)")
     # if you support overwriting the .dat/.pdf/.png, expose it:
     sx.add_argument("--overwrite", action="store_true", help="Overwrite existing outputs")
+    
+    
+    #-----xsh-tell processing tellurics:
+    from .cli_handlers import cmd_xsh_tellurics
+    sx_tell = sub.add_parser(
+    "xsh-tellurics",
+    help="Merge and plot X-shooter MERGE1D telluric standards per object",
+    )
+    sx_tell.add_argument("--root", default=".", help="Search root directory")
+    sx_tell.add_argument("--outdir", default=None, help="Output directory (default: root)")
+    sx_tell.add_argument("--no-prefer-end", action="store_true",
+                        help="Do NOT prefer files under reflex_end_products")
+    sx_tell.add_argument("--allow-tmp", action="store_true",
+                        help="Include reflex_tmp_products/response directories")
+    sx_tell.add_argument("--show", action="store_true", help="If set, plots will be shown as pop-up window.")
+    sx_tell.add_argument("--snr", action="store_true", help="If set, plots will have a subfigure showing the SNR")
+
+    sx_tell.add_argument("--unbinned", action="store_true", help="If set, will also save unbinned version of the spectrum")
+    
+    
+    # bin widths (nm)
+    sx_tell.add_argument("--dw-uvb", type=float, default=0.3, help="UVB bin width [nm]")
+    sx_tell.add_argument("--dw-vis", type=float, default=0.3, help="VIS bin width [nm]")
+    sx_tell.add_argument("--dw-nir", type=float, default=1.0, help="NIR bin width [nm]")
+
+    sx_tell.add_argument("--uvb-vis-overlap", nargs=2, type=float, default=(550.0, 555.0), metavar=("LO", "HI"), help="Overlap window UVB↔VIS [nm]")
+    sx_tell.add_argument("--vis-nir-overlap", nargs=2, type=float,
+                        default=(1010.0, 1020.0), metavar=("LO", "HI"))
+    sx_tell.add_argument("--vis-nir-edge", type=float, default=1019.0)
+    sx_tell.add_argument("--uvb-vis-edge", type=float, default=555.0, help="Handoff edge UVB→VIS [nm]")
+    sx_tell.add_argument("--scale-stat", choices=["median", "mean"],
+                        default="median")
+
+    sx_tell.set_defaults(func=cmd_xsh_tellurics)
+    
+    # --- process-epochs
+    from .cli_handlers import cmd_process_epochs
+    s_ep = sub.add_parser(
+        "process-epochs",
+        help="Process all epochs under ROOT (stitch per-epoch), then plot all epochs together and individually."
+    )
+    s_ep.add_argument("--root", required=True, help="Parent directory containing Epoch* subfolders")
+    s_ep.add_argument("--outdir", default = None, required=False, help="Directory to write outputs")
+    s_ep.add_argument("--show", action="store_true", help="If set, plots will be shown as pop-up window.")
+
+    s_ep.set_defaults(func=cmd_process_epochs)
+
 
     # wire handler
     sx.set_defaults(func=cmd_xsh_merge_plot)
