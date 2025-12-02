@@ -4,14 +4,8 @@
 # Run as:  python -m single_sne.cli <subcommand> [options]
 import logging
 import argparse
-import pathlib
 import sys
-from datetime import date
-import numpy as np
-from pathlib import Path
-from astropy import units as u
-import click
-from .spectra.instruments import which_kind_of_spectrum, list_supported_instruments
+
 
 
 def build_parser() -> argparse.ArgumentParser:
