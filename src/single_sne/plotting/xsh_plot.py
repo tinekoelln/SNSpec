@@ -5,6 +5,8 @@ from pathlib import Path
 import astropy.units as u
 import scienceplots
 plt.style.use(['science'])
+from single_sne.plotting.plot_helpers import setup_science_style  # wherever you put it
+setup_science_style()
 
 
 __all__ = ["plot_signal_to_noise_combined",

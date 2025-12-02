@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import scienceplots
 plt.style.use(['science'])
 import numpy as np
+from single_sne.plotting.plot_helpers import setup_science_style  # wherever you put it
+setup_science_style()
 
 def create_edges(w_centers):
     # variable bin widths (dw can be array or scalar)

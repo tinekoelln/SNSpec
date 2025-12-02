@@ -7,6 +7,8 @@ from astropy.units import Quantity
 import scienceplots
 plt.style.use(['science'])
 __all__ = ["_plot_epoch"]   
+from single_sne.plotting.plot_helpers import setup_science_style  # wherever you put it
+setup_science_style()
 
 
 def load_combined_spectrum(path, debug = False):

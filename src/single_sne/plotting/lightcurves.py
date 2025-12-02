@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
 import scienceplots
 plt.style.use(['science'])
+from single_sne.plotting.plot_helpers import setup_science_style  # wherever you put it
+setup_science_style()
 
 import numpy as np
 import pandas as pd
