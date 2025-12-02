@@ -105,7 +105,7 @@ def process_epoch(
     if xsh.is_dir():
         telescopes_listed.append("XSHOOTER")
         for datafile in _iter_files(xsh, patterns =( "*.dat")):
-            if debug: print(f"[DEBUG]: XSHOOTER files: {list(_iter_files(xsh, patterns =( "*.dat")))}")
+            if debug: print(f"[DEBUG]: XSHOOTER files: {list(_iter_files(xsh, patterns =( '*.dat')))}")
             try:
                 if debug: print(f"[DEBUG]: reading in datafile {datafile}")
                 w_xsh, f_xsh, _ = read_xshooter_dat(datafile, debug=debug)  # Quantities
