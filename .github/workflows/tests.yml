@@ -31,6 +31,14 @@ jobs:
           python -m pip install .[dev] || python -m pip install .
           # Ensure pytest is installed (if not already via [dev])
           python -m pip install pytest
+      - name: Install LaTeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            dvipng \
+            cm-super
 
       - name: Run tests
         run: |
