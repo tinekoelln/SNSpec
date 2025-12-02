@@ -92,3 +92,16 @@ def read_salt_dat(
 
     #w, f, fe = clean_data(w, f, fe)
     return (w, f, fixed) #if fe is not None else (w, f, fixed)
+
+import inspect as _inspect
+
+__all__ = [
+    name
+    for name, obj in globals().items()
+    if not name.startswith("_")
+    and (
+        _inspect.isfunction(obj)
+        or _inspect.isclass(obj)
+        # or _inspect.ismodule(obj)  # include submodules if you want
+    )
+]

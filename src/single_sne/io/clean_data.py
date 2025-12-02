@@ -308,3 +308,17 @@ def clean_data(w, f,f_err = None, *, interp_small_gaps=True, max_gap=5, drop_spi
         return w, f, f_err
     else:
         return w, f
+    
+    
+import inspect as _inspect
+
+__all__ = [
+    name
+    for name, obj in globals().items()
+    if not name.startswith("_")
+    and (
+        _inspect.isfunction(obj)
+        or _inspect.isclass(obj)
+        # or _inspect.ismodule(obj)  # include submodules if you want
+    )
+]

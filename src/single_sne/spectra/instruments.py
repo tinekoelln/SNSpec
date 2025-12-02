@@ -81,3 +81,15 @@ def register_instrument(name: str, wavelength_unit: u.UnitBase, flux_unit: u.Uni
     _ALIASES[canon] = canon
     for a in aliases:
         _ALIASES[a.strip().lower()] = canon
+import inspect as _inspect
+
+__all__ = [
+    name
+    for name, obj in globals().items()
+    if not name.startswith("_")
+    and (
+        _inspect.isfunction(obj)
+        or _inspect.isclass(obj)
+        # or _inspect.ismodule(obj)  # include submodules if you want
+    )
+]

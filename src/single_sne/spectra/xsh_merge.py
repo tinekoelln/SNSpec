@@ -96,3 +96,17 @@ def merge_vis_nir(
         return w, f, err, s_nir, nir_scaled 
     else:
         return w, f, err, s_nir if vis and nir else 1.0
+    
+
+import inspect as _inspect
+
+__all__ = [
+    name
+    for name, obj in globals().items()
+    if not name.startswith("_")
+    and (
+        _inspect.isfunction(obj)
+        or _inspect.isclass(obj)
+        # or _inspect.ismodule(obj)  # include submodules if you want
+    )
+]

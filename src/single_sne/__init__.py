@@ -36,6 +36,7 @@ try:
         "__all__",
         [n for n in dir(_snspec) if not n.startswith("_")],
     )
+    
 except Exception:
     # If snspec fails to import (e.g. during an incomplete editable install),
     # keep the top-level namespace minimal instead of crashing.

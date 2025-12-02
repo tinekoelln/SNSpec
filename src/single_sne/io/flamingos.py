@@ -118,3 +118,16 @@ def read_flamingos_dat(
             print(f"[read_flamingos_dat] Unit check for flux_error: {isinstance(fe, Quantity)}")
 
     return w, f, fe, fixed
+
+import inspect as _inspect
+
+__all__ = [
+    name
+    for name, obj in globals().items()
+    if not name.startswith("_")
+    and (
+        _inspect.isfunction(obj)
+        or _inspect.isclass(obj)
+        # or _inspect.ismodule(obj)  # include submodules if you want
+    )
+]

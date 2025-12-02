@@ -34,3 +34,16 @@ def read_lightcurve(path, debug=False):
     # Receives path to the lightcurve, outputs dataframe with mjd, mag, err, filter, substracted
     lightcurve_df = pd.read_csv(path, sep = ' ')
     return lightcurve_df
+
+import inspect as _inspect
+
+__all__ = [
+    name
+    for name, obj in globals().items()
+    if not name.startswith("_")
+    and (
+        _inspect.isfunction(obj)
+        or _inspect.isclass(obj)
+        # or _inspect.ismodule(obj)  # include submodules if you want
+    )
+]

@@ -327,3 +327,16 @@ def choose_vis_closest_to_nir(arms_for_star: dict, debug: bool = False) -> dict:
     arms_for_star["VIS"] = [best_vis]
 
     return arms_for_star
+
+import inspect as _inspect
+
+__all__ = [
+    name
+    for name, obj in globals().items()
+    if not name.startswith("_")
+    and (
+        _inspect.isfunction(obj)
+        or _inspect.isclass(obj)
+        # or _inspect.ismodule(obj)  # include submodules if you want
+    )
+]
