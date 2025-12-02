@@ -9,6 +9,7 @@ from pathlib import Path
 DATA_DIR = Path(__file__).parent / "tests_data"
 def test_lightcurve():
     path = DATA_DIR / "/sn2025ifq.txt"
+    lightcurve = read_lightcurve(path)
     
     assert isinstance(lightcurve, pd.DataFrame)
     assert lightcurve.shape[1]==5
@@ -29,4 +30,4 @@ def test_plot_lightcurve(tmp_path):
     
     tmp_path.mkdir(parents=True, exist_ok=True)
     fig = plot_lightcurves(lightcurve_df, title = 'Lightcurve of SN2025cy')
-    fig.savefig(tmp_path / 'SN2025cy_lighcurveSWIFT+BG.pdf', dpi = 600)
+    fig.savefig(tmp_path /'SN2025cy_lighcurveSWIFT+BG.pdf', dpi = 600)
