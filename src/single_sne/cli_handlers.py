@@ -13,7 +13,6 @@ import sys
 import numpy as np
 from pathlib import Path
 from astropy import units as u
-from astropy.units import Quantity
 from .spectra.instruments import which_kind_of_spectrum, list_supported_instruments
 
 def cmd_convert_fnu(args, debug = False):
