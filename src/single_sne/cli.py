@@ -31,8 +31,8 @@ def build_parser() -> argparse.ArgumentParser:
     from .cli_handlers import cmd_bin_spectrum
     pb = sub.add_parser("bin-spectrum", help="Flux-conserving binning of a 2–3 col ASCII spectrum (wavelength, flux[, flux_err]).")
 
-    pb.add_argument("singlee", nargs="?", default="-", help="Input 2–3 col ASCII (λ, flux[, σ]). Use '-' for stdin. Lines starting with '#' are ignored.")
-    pb.add_argument("outfile", nargs="?", default="-", help="Output 2–3 col ASCII. Use '-' for stdout.")
+    pb.add_argument("--infile", nargs="?", default="-", help="Input 2–3 col ASCII (λ, flux[, σ]). Use '-' for stdin. Lines starting with '#' are ignored.")
+    pb.add_argument("--outfile", nargs="?", default="-", help="Output 2–3 col ASCII. Use '-' for stdout.")
 
     pb.add_argument("--bin-size", type=float, required=True,help="Bin width in wave_unit (must be > 0).")
     pb.add_argument("--wave-unit", default="um",help='Wavelength unit, e.g. "um", "nm", "Angstrom".')
@@ -154,7 +154,7 @@ def main(argv=None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
     
-    #set log level from -v occurences:
+    #set log level from -v occurrences:
     level = logging.WARNING if args.verbose == 0 else logging.INFO if args.verbose == 1 else logging.DEBUG
     logging.basicConfig(level=level, format="%(levelname)s: %(message)s")
 

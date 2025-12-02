@@ -1,8 +1,4 @@
 from __future__ import annotations
-import numpy as np 
-from astropy import units as u 
-import pandas as pd 
-from scipy.interpolate import interp1d
 from pathlib import Path
 from single_sne.io.lightcurves import find_lightcurve, read_lightcurve
 from single_sne.plotting.lightcurves import plot_lightcurves

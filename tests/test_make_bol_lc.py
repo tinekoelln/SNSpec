@@ -8,6 +8,9 @@ import matplotlib.pyplot as plt
 import scienceplots
 plt.style.use(['science'])
 
+# Base directory for test data (relative to THIS file)
+DATA_DIR = Path(__file__).parent / "tests_data"
+
 
 # assuming these are already defined as we discussed:
 # - LightCurveHeader
@@ -15,7 +18,7 @@ plt.style.use(['science'])
 # - rd_lcbol_data
 
 def test_rd_lcbol_data():
-    hdr, lcdata = rd_lcbol_data("/Users/ckoelln/Documents/Single_Objects/lcbol_distrib/sn2002bo_lcbolinput.dat")
+    hdr, lcdata = rd_lcbol_data(DATA_DIR / "sn2002bo_lcbolinput.dat")
 
     print("Header:")
     print(hdr)
@@ -28,9 +31,9 @@ def test_rd_lcbol_data():
 
 
 def test_pbinfo_and_extinction():
-    pbinfo_path = "/Users/ckoelln/Documents/Single_Objects/lcbol_distrib/pbinfo.dat"  # adjust to your repo layout
+    pbinfo_path = DATA_DIR / "pbinfo.dat"  # adjust to your repo layout
     filt_meta = read_pbinfo(pbinfo_path)
-    hdr, lcdata = rd_lcbol_data("/Users/ckoelln/Documents/Single_Objects/lcbol_distrib/sn2002bo_lcbolinput_copy.dat")
+    hdr, lcdata = rd_lcbol_data(DATA_DIR / "sn2002bo_lcbolinput_copy.dat")
 
     print("\nHeader:")
     print(hdr)
@@ -74,8 +77,8 @@ def test_pbinfo_and_extinction():
         #)
         
 def test_sorted_filters_sn2002bo():
-    infile = "/Users/ckoelln/Documents/Single_Objects/lcbol_distrib/sn2002bo_lcbolinput.dat"    
-    pbinfo_file = "/Users/ckoelln/Documents/Single_Objects/lcbol_distrib/pbinfo.dat"
+    infile = DATA_DIR / "sn2002bo_lcbolinput.dat"    
+    pbinfo_file = DATA_DIR / "pbinfo.dat"
 
     hdr, lcdata = rd_lcbol_data(infile)
     pbinfo = read_pbinfo(pbinfo_file)
@@ -102,12 +105,12 @@ def test_mklcbol_sn2002bo():
     # ------------------------------------------------------------------
     # Ideally: put the .dat files under tests/data/ and use relative paths.
     # For now I'm using the absolute paths you've been using:
-    infile = Path("/Users/ckoelln/Documents/Single_Objects/lcbol_distrib/sn2002bo_lcbolinput_copy.dat")
-    pbinfo = Path("/Users/ckoelln/Documents/Single_Objects/lcbol_distrib/pbinfo.dat")
+    infile = Path(DATA_DIR / "sn2002bo_lcbolinput_copy.dat")
+    pbinfo = Path(DATA_DIR / "pbinfo.dat")
 
     assert infile.exists(), f"Input file not found: {infile}"
     assert pbinfo.exists(), f"pbinfo file not found: {pbinfo}"
-    tmp_path = Path("/Users/ckoelln/Documents/Single_Objects/Bol_LC")
+    tmp_path = Path(DATA_DIR)
     tmp_path.mkdir(parents=True, exist_ok=True)
     # Output bolometric LC file will be written into a temporary directory
     fout = tmp_path / "sn2002bo_lcbol_gauss.dat"
@@ -137,7 +140,7 @@ def test_mklcbol_sn2002bo():
     assert np.all(np.isfinite(Lbol)), "Non-finite L_bol values"
     assert np.all(Lbol > 0), "L_bol should be positive"
     assert Lbol.max() > Lbol.min(), "L_bol should vary over time"
-    data_idl = "/Users/ckoelln/Documents/Single_Objects/lcbol_distrib/sn2002bo_lcbol_UBVRI.dat"
+    data_idl = DATA_DIR / "sn2002bo_lcbol_UBVRI.dat"
     t_idl, Lbol_idl, Lbolerr_idl = np.loadtxt(
     data_idl,
     comments="#",
@@ -178,11 +181,11 @@ def test_mklcbol_sn2002bo():
     
     
 def test_read_blackgem_csv():
-    bg = read_blackgem_csv("/Users/ckoelln/Documents/Single_Objects/light_curves/SN2025cy_BG_data.csv")
+    bg = read_blackgem_csv(DATA_DIR / "SN2025cy_BG_data.csv")
     print(bg.head())
     print("BG filters mapped to pbinfo:", bg["pb_name"].unique())
     
-    uv = read_uvot_ab_txt("/Users/ckoelln/Documents/Single_Objects/light_curves/UVOT_AB_mags.txt")
+    uv = read_uvot_ab_txt(DATA_DIR / "UVOT_AB_mags.txt")
     print(uv.head())
     print("UVOT filters mapped to pbinfo:", uv["pb_name"].unique())
     
@@ -193,8 +196,8 @@ def test_build_mklcbol_input():
         ExtinctionInfo,
     )
 
-    bg_file = "/Users/ckoelln/Documents/Single_Objects/light_curves/SN2025cy_BG_data.csv"
-    uvot_file = "/Users/ckoelln/Documents/Single_Objects/light_curves/UVOT_AB_mags.txt"
+    bg_file = DATA_DIR / "SN2025cy_BG_data.csv"
+    uvot_file = DATA_DIR / "UVOT_AB_mags.txt"
     
     #mu_2025cy, dmu_2025cy = distmod_from_z_with_pecvel(0.011, H0=73.0, sigma_v=300.0)
     
@@ -214,7 +217,7 @@ def test_build_mklcbol_input():
     dist_mod_err=sigma_from_ned,
     )
     out = build_mklcbol_input(
-        outfile="/Users/ckoelln/Documents/Single_Objects/light_curves/SN2025cy_lcbolinput.dat",
+        outfile=DATA_DIR /  "SN2025cy_lcbolinput.dat",
         sn_name="SN2025cy",
         bg_csv=bg_file,
         uvot_txt=uvot_file,
@@ -228,8 +231,8 @@ def test_bol_lc():
     from single_sne.pseudobol_lightcurve.make_bol_lc import mklcbol
     from pathlib import Path
 
-    lcbol_input = Path("/Users/ckoelln/Documents/Single_Objects/light_curves/SN2025cy_lcbolinput.dat")
-    pbinfo_file = Path("/Users/ckoelln/Documents/Single_Objects/lcbol_distrib/pbinfo_SN2025cy.dat")
+    lcbol_input = Path(DATA_DIR / "SN2025cy_lcbolinput.dat")
+    pbinfo_file = Path(DATA_DIR / "pbinfo_SN2025cy.dat")
     
     f_all = mklcbol(
         infile=lcbol_input,
@@ -279,4 +282,4 @@ def test_bol_lc():
     fig.tight_layout()
     plt.show()
     
-    fig.savefig("/Users/ckoelln/Documents/Single_Objects/light_curves/SN2025cy_lcbol.pdf", dpi = 600)
+    fig.savefig(DATA_DIR / "SN2025cy_lcbol.pdf", dpi = 600)
