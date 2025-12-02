@@ -4,12 +4,13 @@ import numpy as np
 import astropy.units as u
 from .stitching import stitch_arms
 
-__all__ = ["merge_uvb_vis_nir"]
+__all__ = ["merge_uvb_vis_nir",
+           "merge_vis_nir"]
 
 def merge_uvb_vis_nir(
-    uvb: tuple[u.Quantity, u.Quantity] | None,
-    vis: tuple[u.Quantity, u.Quantity] | None,
-    nir: tuple[u.Quantity, u.Quantity] | None,
+    uvb: tuple[u.Quantity, u.Quantity, u.Quantity] | None,
+    vis: tuple[u.Quantity, u.Quantity, u.Quantity] | None,
+    nir: tuple[u.Quantity, u.Quantity, u.Quantity] | None,
     *,
     uvb_vis_overlap=(550, 555) * u.nm,
     uvb_vis_edge=555 * u.nm,
@@ -17,32 +18,81 @@ def merge_uvb_vis_nir(
     vis_nir_edge=1019 * u.nm,
     scale_stat="median",
     debug=False,
-) -> tuple[u.Quantity, u.Quantity]:
+) -> tuple[u.Quantity, u.Quantity, u.Quantity, float, float] :
     """
     Pairwise stitch: (UVB + VIS) → Combo, then (Combo + NIR) → final.
     Fluxes must already be F_lambda in the same units.
+    returns: (wavelength, flux, error, vis_scale, nir_scale)
     """
-    w, f = None, None
+    
+    w, f, err = None, None, None
     if uvb and vis:
-        w, f, _ = stitch_arms(
-            uvb[0], uvb[1], vis[0], vis[1],
+        w, f, err, s_vis = stitch_arms(
+            uvb[0], uvb[1], uvb[2],  vis[0], vis[1], vis[2],
             overlap=uvb_vis_overlap, stitch_edge=uvb_vis_edge,
-            scale_stat=scale_stat, debug=debug
+            scale_stat=scale_stat, debug=debug,
         )
     elif uvb:
-        w, f = uvb
+        w, f, err = uvb
     elif vis:
-        w, f = vis
+        w, f, err = vis
 
     if nir:
         if (w is None) or (f is None):
-            w, f = nir
+            w, f, err = nir
         else:
-            w, f, _ = stitch_arms(
-                w, f, nir[0], nir[1],
+            w, f, err, s_nir = stitch_arms(
+                w, f, err, nir[0], nir[1], nir[2],
                 overlap=vis_nir_overlap, stitch_edge=vis_nir_edge,
-                scale_stat=scale_stat, debug=debug
+                scale_stat=scale_stat, debug=debug,
             )
+            
     if w is None:
         return (u.Quantity([]), u.Quantity([]))
-    return w, f
+    return w, f, err, s_vis if uvb and vis else 1.0, s_nir if nir and ((uvb and vis) or vis) else 1.0
+
+
+
+def merge_vis_nir(
+    vis: tuple[u.Quantity, u.Quantity, u.Quantity] | None,
+    nir: tuple[u.Quantity, u.Quantity, u.Quantity] | None,
+    *,
+    vis_nir_overlap=(1010, 1020) * u.nm,
+    vis_nir_edge=1019 * u.nm,
+    scale_stat="median",
+    debug=False,
+    return_scaled = False
+) -> tuple[u.Quantity, u.Quantity, u.Quantity, float, float] :
+    """
+    Pairwise stitch: (UVB + VIS) → Combo, then (Combo + NIR) → final.
+    Fluxes must already be F_lambda in the same units.
+    returns: (wavelength, flux, error, vis_scale, nir_scale)
+    """
+    
+    w, f, err = None, None, None
+    if vis and nir:
+        if return_scaled:
+            w, f, err, s_nir, nir_scaled = stitch_arms(
+            vis[0], vis[1], vis[2], nir[0], nir[1], nir[2],
+            overlap=vis_nir_overlap, stitch_edge=vis_nir_edge,
+            scale_stat=scale_stat, debug=debug, return_scaled=return_scaled
+            )
+        else:
+            w, f, err, s_nir = stitch_arms(
+                vis[0], vis[1], vis[2], nir[0], nir[1], nir[2],
+                overlap=vis_nir_overlap, stitch_edge=vis_nir_edge,
+                scale_stat=scale_stat, debug=debug, return_scaled=return_scaled
+            )
+    elif vis:
+        w, f, err = vis
+    elif nir:
+        w, f, err = nir
+            
+    if w is None:
+        return (u.Quantity([]), u.Quantity([]))
+    
+    if return_scaled:
+        if not (vis and nir):s_nir = 1.0
+        return w, f, err, s_nir, nir_scaled 
+    else:
+        return w, f, err, s_nir if vis and nir else 1.0
