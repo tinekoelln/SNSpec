@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import astropy.units as u
 from astropy.units import Unit  # use the string parser
-
+from typing import Union
 import numpy as np
 
 # House wavelength unit we use on grids for X-shooter steps
@@ -20,7 +20,7 @@ INSTRUMENT_UNITS = {
     "SALT":       (u.AA, XSH_FLUX_UNIT),
 }
 
-def nm_to_angstrom(wavelength_nm: float | np.ndarray, debug = False) -> float | np.ndarray:
+def nm_to_angstrom(wavelength_nm: Union[float, np.ndarray], debug=False) -> Union[float, np.ndarray]:    
     """
     Convert wavelength from nanometers (nm) to Angstrom (Å).
 
@@ -51,7 +51,7 @@ def nm_to_angstrom(wavelength_nm: float | np.ndarray, debug = False) -> float | 
         return (np.asarray(wavelength_nm) * u.nm).to(u.AA)
             
 
-def angstrom_to_micron(wavelength_A: float | np.ndarray, debug = False) -> float | np.ndarray:
+def angstrom_to_micron(wavelength_A: Union[float, np.ndarray], debug=False) -> Union[float, np.ndarray]:    
     """
     Convert wavelength from Angstrom (Å) to micrometers (µm).
 
@@ -85,7 +85,7 @@ def angstrom_to_micron(wavelength_A: float | np.ndarray, debug = False) -> float
             print("[angstrom_to_micron]: No units present")
         return (np.asarray(wavelength_A) * u.AA).to(u.um)
 
-def nm_to_micron(wavelength_nm: float | np.ndarray, debug= False) -> float | np.ndarray:
+def nm_to_micron(wavelength_nm: Union[float, np.ndarray], debug=False) -> Union[float, np.ndarray]:    
     """
     Convert wavelength from nanometers (nm) to micrometers (µm).
 

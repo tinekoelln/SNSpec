@@ -10,7 +10,6 @@ from typing import Tuple, Optional, Union
 from single_sne.units import INSTRUMENT_UNITS
 from single_sne.io.flamingos import read_flamingos_dat
 from single_sne.io.salt import read_salt_dat
-from single_sne.spectra.spectra import to_fnu_mjy
 
 
 
@@ -329,8 +328,8 @@ def stitch_arms(
         flux_right,
         err_right,
         *,
-        overlap=(550*u.nm, 555*u.nm),
-        stitch_edge=555 * u.nm,
+        overlap = (Quantity(550, u.nm), Quantity(555, u.nm)),
+        stitch_edge=Quantity(555, u.nm),
         scale_stat="median",
         scale_to_right=False,
         return_scaled = False, 

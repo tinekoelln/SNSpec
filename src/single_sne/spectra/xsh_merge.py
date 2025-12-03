@@ -1,7 +1,7 @@
 # single_sne/spectra/xsh_merge.py
 from __future__ import annotations
 import numpy as np
-import astropy.units as u
+import astropy.units as u, Quantity
 from .stitching import stitch_arms
 
 __all__ = ["merge_uvb_vis_nir",
@@ -12,10 +12,10 @@ def merge_uvb_vis_nir(
     vis: tuple[u.Quantity, u.Quantity, u.Quantity] | None,
     nir: tuple[u.Quantity, u.Quantity, u.Quantity] | None,
     *,
-    uvb_vis_overlap=(550, 555) * u.nm,
-    uvb_vis_edge=555 * u.nm,
-    vis_nir_overlap=(1010, 1020) * u.nm,
-    vis_nir_edge=1019 * u.nm,
+    uvb_vis_overlap=(Quantity(550, u.nm), Quantity(555, u.nm)),
+    uvb_vis_edge=Quantity(555, u.nm),
+    vis_nir_overlap=(Quantity(1010, u.nm), Quantity(1020, u.nm)),
+    vis_nir_edge=Quantity(1019,u.nm),
     scale_stat="median",
     debug=False,
 ) -> tuple[u.Quantity, u.Quantity, u.Quantity, float, float] :
@@ -57,8 +57,8 @@ def merge_vis_nir(
     vis: tuple[u.Quantity, u.Quantity, u.Quantity] | None,
     nir: tuple[u.Quantity, u.Quantity, u.Quantity] | None,
     *,
-    vis_nir_overlap=(1010, 1020) * u.nm,
-    vis_nir_edge=1019 * u.nm,
+    vis_nir_overlap=(Quantity(1010,u.nm), Quantity(1020, u.nm)),
+    vis_nir_edge=Quantity(1019,u.nm),
     scale_stat="median",
     debug=False,
     return_scaled = False
