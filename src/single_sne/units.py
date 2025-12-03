@@ -1,17 +1,23 @@
+from __future__ import annotations
+
 import astropy.units as u
+from astropy.units import Unit  # use the string parser
+
 import numpy as np
 
 # House wavelength unit we use on grids for X-shooter steps
 XSH_WAVE_UNIT = u.nm
 
 # Native XShooter flux (F_lambda)
-XSH_FLUX_UNIT = u.erg / (u.s * u.cm**2 * u.AA)
+# This is equivalent to u.erg / (u.s * u.cm**2 * u.AA),
+# but uses the string parser to avoid any cm**2 / cm*cm operator issues.
+XSH_FLUX_UNIT = Unit("erg / (s cm2 Angstrom)")
 
 INSTRUMENT_UNITS = {
-    "JWST":      (u.um, u.mJy),
-    "FLAMINGOS2":(u.AA,  u.erg / (u.s * u.cm**2 * u.AA)),
-    "XSHOOTER":  (u.nm,  u.erg / (u.s * u.cm**2 * u.AA)),
-    "SALT":      (u.AA,  u.erg / (u.s * u.cm**2 * u.AA)),
+    "JWST":       (u.um, u.mJy),
+    "FLAMINGOS2": (u.AA, XSH_FLUX_UNIT),
+    "XSHOOTER":   (u.nm, XSH_FLUX_UNIT),
+    "SALT":       (u.AA, XSH_FLUX_UNIT),
 }
 
 def nm_to_angstrom(wavelength_nm: float | np.ndarray, debug = False) -> float | np.ndarray:

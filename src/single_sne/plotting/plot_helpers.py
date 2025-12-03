@@ -1,3 +1,4 @@
+from __future__ import annotations
 import shutil
 import matplotlib
 matplotlib.use("Agg")  # safe for CI and scripts

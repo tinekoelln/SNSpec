@@ -1,3 +1,4 @@
+from __future__ import annotations
 import numpy as np
 from astropy import units as u 
 from scipy.signal import medfilt

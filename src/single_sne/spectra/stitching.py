@@ -329,7 +329,7 @@ def stitch_arms(
         flux_right,
         err_right,
         *,
-        overlap=(550, 555) * u.nm,
+        overlap=(550*u.nm, 555*u.nm),
         stitch_edge=555 * u.nm,
         scale_stat="median",
         scale_to_right=False,

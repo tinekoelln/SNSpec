@@ -1,12 +1,39 @@
 Metadata-Version: 2.4
 Name: single-sne
-Version: 0.0.1
+Version: 0.0.1.dev47+g6b57cd3c2.d20251203
 Summary: Small utilities for single SNe spectra (CLI + library)
-Requires-Python: >=3.13
+Author: Your Name
+License: Proprietary
+Project-URL: Homepage, https://example.com
+Project-URL: Repository, https://github.com/<you>/single_sne
+Project-URL: Documentation, https://<your-rtd-pro-domain>/projects/single_sne
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: License :: Other/Proprietary License
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Astronomy
+Requires-Python: >=3.10
 Description-Content-Type: text/markdown
-Requires-Dist: numpy>=2.3
-Requires-Dist: pandas>=2.3
+Requires-Dist: numpy>=2.0
+Requires-Dist: pandas>=2.2
 Requires-Dist: matplotlib>=3.8
-Requires-Dist: astropy>=7.0
+Requires-Dist: astropy>=6.0
 Requires-Dist: specutils>=2.1
-Requires-Dist: scipy>=1.14
+Requires-Dist: scipy>=1.11
+Requires-Dist: scienceplots>=2.1
+Requires-Dist: requests>=2.31
+Requires-Dist: beautifulsoup4>=4.12
+Requires-Dist: scikit-learn>=1.7.2
+Provides-Extra: docs
+Requires-Dist: sphinx>=7; extra == "docs"
+Requires-Dist: furo>=2024.8.6; extra == "docs"
+Requires-Dist: sphinx-autodoc-typehints>=2.3; extra == "docs"
+Provides-Extra: dev
+Requires-Dist: pytest>=8; extra == "dev"
+Requires-Dist: pytest-cov>=5; extra == "dev"
+Requires-Dist: ruff>=0.6; extra == "dev"
+Requires-Dist: black>=24.0; extra == "dev"
+Requires-Dist: ipython>=8; extra == "dev"
+
+# SNSpec
+Library for handling spectral data from supernovae
