@@ -2,7 +2,7 @@ from __future__ import annotations
 import os
 import re
 import sys
-from pathlib import Path
+import pathlib
 import numpy as np
 import matplotlib.pyplot as plt
 from astropy.io import fits
@@ -17,7 +17,7 @@ from single_sne.io.clean_data import clean_data
 from single_sne.spectra.spectra import is_strictly_increasing
 WAVE_UNIT = INSTRUMENT_UNITS["XSHOOTER"][0]
 FLUX_UNIT = INSTRUMENT_UNITS["XSHOOTER"][1]
-PathLike = Union[str, Path]
+PathLike = Union[str, pathlib.Path]
 __all__ = [
     "discover_merge1d_files",
     "read_primary_linear_wcs",
@@ -38,11 +38,11 @@ def discover_merge1d_files(
     prefer_end_products: bool = True,
     allow_tmp: bool = False,
 ) -> dict[str, PathLike]:
-    paths = sorted(Path(root).glob("**/*_FLUX_MERGE1D_*.fits"))
+    paths = sorted(pathlib.Path(root).glob("**/*_FLUX_MERGE1D_*.fits"))
     if not paths:
         return {}
 
-    arms: dict[str, list[Path]] = {"UVB": [], "VIS": [], "NIR": []}
+    arms: dict[str, list[pathlib.Path]] = {"UVB": [], "VIS": [], "NIR": []}
 
     for p in paths:
         up = p.name.upper()
@@ -67,7 +67,7 @@ def discover_merge1d_files(
             return end or arr
         return arr
 
-    final: dict[str, Path] = {}
+    final: dict[str, pathlib.Path] = {}
     if prod == "SCI":
         for arm, arr in arms.items():
             arr = prefer_end(arr)
@@ -269,7 +269,7 @@ def group_tellurics_by_star(arms: dict[str, list[PathLike]]):
     arms: {"VIS": [Path(...), ...], "NIR": [...], ...}
     → {"HD89461": {"VIS":[...], "NIR":[...]}, "Hip102108": {...}, ...}
     """
-    by_star: dict[str, dict[str, list[Path]]] = defaultdict(lambda: defaultdict(list))
+    by_star: dict[str, dict[str, list[pathlib.Path]]] = defaultdict(lambda: defaultdict(list))
 
     for arm, paths in arms.items():
         for p in paths:
@@ -283,7 +283,6 @@ def group_tellurics_by_star(arms: dict[str, list[PathLike]]):
 
 def _obs_mjd(path: PathLike) -> float:
     """Get observation time in MJD from a MERGE1D FITS file."""
-    from pathlib import Path
     import numpy as np
     from astropy.io import fits
     from astropy.time import Time

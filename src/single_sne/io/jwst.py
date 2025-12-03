@@ -6,10 +6,10 @@ import numpy as np
 from astropy import units as u
 from single_sne.spectra.spectra import is_strictly_increasing
 from single_sne.io.clean_data import clean_data
-from pathlib import Path
+import pathlib
 from typing import Tuple, Optional, Union
 
-PathLike = Union[str, Path]
+PathLike = Union[str, pathlib.Path]
 
 
 def read_jwst_df(path: PathLike, as_quantity: bool = True, debug = False) -> pd.DataFrame:

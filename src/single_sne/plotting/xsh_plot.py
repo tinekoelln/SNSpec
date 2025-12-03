@@ -1,7 +1,7 @@
 from __future__ import annotations
 import numpy as np
 import matplotlib.pyplot as plt
-from pathlib import Path
+import pathlib
 import astropy.units as u
 import scienceplots
 plt.style.use(['science'])
@@ -38,17 +38,17 @@ def plot_signal_to_noise_per_arm(
     ax.legend()
     
     if label == 'UVB':
-        outfile_base = Path(outfile_base)
+        outfile_base = pathlib.Path(outfile_base)
         pdf = f"{outfile_base}_SNR_UVB.pdf"
         png = f"{outfile_base}_SNR_UVB.png"
         txt = f"{outfile_base}_SNR_UVB.txt"
     elif label=='VIS':
-        outfile_base = Path(outfile_base)
+        outfile_base = pathlib.Path(outfile_base)
         pdf = f"{outfile_base}_SNR_VIS.pdf"
         png = f"{outfile_base}_SNR_VIS.png"
         txt = f"{outfile_base}_SNR_VIS.txt"
     elif label =='NIR':
-        outfile_base = Path(outfile_base)
+        outfile_base = pathlib.Path(outfile_base)
         pdf = f"{outfile_base}_SNR_NIR.pdf"
         png = f"{outfile_base}_SNR_NIR.png"
         txt = f"{outfile_base}_SNR_NIR.txt"
@@ -156,7 +156,7 @@ def plot_signal_to_noise_combined(
         ax.set_ylim(ylow - pad, yhigh + pad)'''
 
     ax.legend()
-    outfile_base = Path(outfile_base)
+    outfile_base = pathlib.Path(outfile_base)
     pdf = f"{outfile_base}_SNR_combined.pdf"
     png = f"{outfile_base}_SNR_combined.png"
     txt = f"{outfile_base}_SNR_combined.txt"
@@ -285,7 +285,7 @@ def plot_xsh_arms_and_combined(
             ax.legend()
 
 
-    outfile_base = Path(outfile_base)
+    outfile_base = pathlib.Path(outfile_base)
     if snr:
         pdf = f"{outfile_base}_with_SNR.pdf"
         png = f"{outfile_base}_with_SNR.png"

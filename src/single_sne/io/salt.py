@@ -1,5 +1,5 @@
 from __future__ import annotations
-from pathlib import Path
+import pathlib
 import numpy as np
 import matplotlib.pyplot as plt
 from astropy.io import fits
@@ -17,7 +17,7 @@ __all__ = [
     "object_and_date_from_header",
 ]
 
-PathLike = Union[str, Path]
+PathLike = Union[str, pathlib.Path]
 def read_salt_dat(
     path: PathLike,
     *,

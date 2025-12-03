@@ -1,15 +1,15 @@
 from __future__ import annotations
-from pathlib import Path
+import pathlib
 import numpy as np
 import pandas as pd
 import astropy.units as u
 from typing import Iterable, Union
-PathLike = Union[str, Path]
+PathLike = Union[str, pathlib.Path]
 
 
 def _iter_files(d: PathLike, patterns: Iterable[str] | str = ("*.dat", "*.fits")):
     # Coerce a single string into a tuple of one pattern
-    if isinstance(patterns, (str, Path)):
+    if isinstance(patterns, (str, pathlib.Path)):
         patterns = (str(patterns),)
     for pat in patterns:
         for p in d.glob(pat):

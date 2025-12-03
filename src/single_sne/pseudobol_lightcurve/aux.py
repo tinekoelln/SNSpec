@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 from dataclasses import dataclass
-from pathlib import Path
+import pathlib
 from typing import Dict
 from typing import List, Optional, Sequence, Tuple
 from single_sne.pseudobol_lightcurve.dataclasses import LightCurveHeader, FilterLightCurve, PassbandInfo
@@ -17,7 +17,7 @@ from astropy.cosmology import FlatLambdaCDM
 KM_PER_S = Unit("km / s")
 C_KM_S = c.to(KM_PER_S).value
 
-def rd_lcbol_data(infile: str | Path, debug = False) -> Tuple[LightCurveHeader, List[FilterLightCurve]]:
+def rd_lcbol_data(infile: str | pathlib.Path, debug = False) -> Tuple[LightCurveHeader, List[FilterLightCurve]]:
     """
     Python port of rd_lcbol_data.pro.
 
@@ -32,7 +32,7 @@ def rd_lcbol_data(infile: str | Path, debug = False) -> Tuple[LightCurveHeader, 
     hdr : LightCurveHeader
     lcdata : list[FilterLightCurve]
     """
-    infile = Path(infile)
+    infile = pathlib.Path(infile)
     with infile.open() as f:
         lines = [ln.rstrip("\n") for ln in f]
 
@@ -276,14 +276,14 @@ def al_av(
 
     return AlAv, AlAv_err
 
-def read_pbinfo(pbinfo_path: str | Path, debug = False,) -> Dict[str, PassbandInfo]:
+def read_pbinfo(pbinfo_path: str | pathlib.Path, debug = False,) -> Dict[str, PassbandInfo]:
     """
     Python equivalent of the IDL 'readcol' on pbinfo.dat:
     reads columns: name, lambda_eff, ew, zpt (skipping '#' comments).
 
     Returns a dict mapping filter name -> FilterMeta.
     """
-    pbinfo_path = Path(pbinfo_path)
+    pbinfo_path = pathlib.Path(pbinfo_path)
     names: list[str] = []
     lam: list[float] = []
     ew: list[float] = []

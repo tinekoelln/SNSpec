@@ -11,7 +11,7 @@ from single_sne.plotting.single_epoch import plot_epoch
 from single_sne.plotting.multiple_epochs import plot_all_epochs
 import sys
 import numpy as np
-from pathlib import Path
+import pathlib
 from astropy import units as u
 from .spectra.instruments import which_kind_of_spectrum, list_supported_instruments
 
@@ -21,8 +21,8 @@ def cmd_convert_fnu(args, debug = False):
             debug = True
             print("--------DEBUG MODE ACTIVATED--------")
             
-    infile = Path(args.infile).expanduser()
-    outfile = Path(args.outfile).expanduser()
+    infile = pathlib.Path(args.infile).expanduser()
+    outfile = pathlib.Path(args.outfile).expanduser()
 
     # load 2-column ASCII: wavelength, flux
     data = np.loadtxt(infile)
@@ -39,7 +39,6 @@ def cmd_convert_fnu(args, debug = False):
 def cmd_bin_spectrum(args, debug=False):
     import sys
     import numpy as np
-    from pathlib import Path
     import pandas as pd
     from astropy import units as u
     from .spectra import bin_spectrum
@@ -57,13 +56,13 @@ def cmd_bin_spectrum(args, debug=False):
     to_stdout = getattr(args, "outfile", None) in (None, "-", "/dev/stdout")
 
     # resolve paths
-    p_in = Path(args.infile).expanduser()
+    p_in = pathlib.Path(args.infile).expanduser()
     if not p_in.exists():
         print(f"ERROR: input file not found: {p_in}", file=sys.stderr)
         return 2
 
     if not to_stdout:
-        p_out = Path(args.outfile).expanduser()
+        p_out = pathlib.Path(args.outfile).expanduser()
         if p_out.exists() and not getattr(args, "overwrite", False):
             print(f"ERROR: {p_out} exists. Use --overwrite to replace.", file=sys.stderr)
             return 2
@@ -228,13 +227,13 @@ def cmd_xsh_merge_plot(args, debug=False) -> int:
         return 2
 
 
-    root = Path(args.root).expanduser()
+    root = pathlib.Path(args.root).expanduser()
     if args.outdir is None:
         outdir = root
         if debug:
             print(f"[info] No --outdir given → using root: {outdir}")
     else:
-        outdir = Path(args.outdir).expanduser()
+        outdir = pathlib.Path(args.outdir).expanduser()
 
     outdir.mkdir(parents=True, exist_ok=True)
     
@@ -496,14 +495,14 @@ def cmd_process_epochs(args, debug=False) -> int:
         show = False
     
     
-    root = Path(args.root).expanduser()
+    root = pathlib.Path(args.root).expanduser()
     # If no outdir specified → use root
     if args.outdir is None:
         outdir = root
         if debug:
             print(f"[info] No --outdir given → using root: {outdir}")
     else:
-        outdir = Path(args.outdir).expanduser()
+        outdir = pathlib.Path(args.outdir).expanduser()
 
     outdir.mkdir(parents=True, exist_ok=True)
     
@@ -558,14 +557,14 @@ def cmd_plot_lightcurve(args, debug=False) -> int:
             debug = True
             print(f"\n\n--------DEBUG MODE ACTIVATED--------")
             print(f"Creating light curve...")
-    root = Path(args.root).expanduser()
+    root = pathlib.Path(args.root).expanduser()
     # If no outdir specified → use root
     if args.outdir is None:
         outdir = root
         if debug:
             print(f"[info] No --outdir given → using root: {outdir}")
     else:
-        outdir = Path(args.outdir).expanduser()
+        outdir = pathlib.Path(args.outdir).expanduser()
 
     outdir.mkdir(parents=True, exist_ok=True)
     
@@ -600,13 +599,13 @@ def cmd_xsh_tellurics(args, debug = False)-> int:
     else:
         snr = False
         
-    root = Path(args.root).expanduser()
+    root = pathlib.Path(args.root).expanduser()
     if args.outdir is None:
         outdir = root
         if debug:
             print(f"[info] No --outdir given → using root: {outdir}")
     else:
-        outdir = Path(args.outdir).expanduser()
+        outdir = pathlib.Path(args.outdir).expanduser()
 
     outdir.mkdir(parents=True, exist_ok=True)
             

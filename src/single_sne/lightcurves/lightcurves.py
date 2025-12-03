@@ -1,5 +1,5 @@
 from __future__ import annotations
-from pathlib import Path
+import pathlib
 from single_sne.io.lightcurves import find_lightcurve, read_lightcurve
 from single_sne.plotting.lightcurves import plot_lightcurves
 
@@ -12,7 +12,7 @@ def get_and_plot_lightcurves(root):
     
     lcdir, lc_list = find_lightcurve(root)
     for file in lc_list:
-        full_path = Path(lcdir)/file
+        full_path = pathlib.Path(lcdir)/file
         print(file.stem)
         snname = file.stem
         

@@ -3,7 +3,7 @@ import numpy as np
 import warnings
 import astropy.units as u
 from specutils import Spectrum
-from pathlib import Path
+import pathlib
 from astropy.units import Quantity
 from typing import Tuple, Optional, Any
 
@@ -465,7 +465,7 @@ def stitch_arms(
         return w_comb * wl_unit, f_comb * fl_unit, err_comb * el_unit, float(s)
 
 
-def combine_salt_dir(sa_dir: Path, *, jwst_units: bool = False, debug: bool = False):
+def combine_salt_dir(sa_dir: pathlib.Path, *, jwst_units: bool = False, debug: bool = False):
     """
     Read all *.dat in a SALT directory, scale to a common reference using
     overlap, stitch into one spectrum, and (optionally) convert to JWST units.
@@ -534,7 +534,7 @@ def combine_salt_dir(sa_dir: Path, *, jwst_units: bool = False, debug: bool = Fa
     return "SALT", w_comb, f_comb   
 
 
-def combine_flamingos_dir(fl_dir: Path, *, jwst_units: bool = False, debug: bool = False):
+def combine_flamingos_dir(fl_dir: pathlib.Path, *, jwst_units: bool = False, debug: bool = False):
     """
     Read all FLAMINGOS *.dat in an epoch directory, scale to a common reference via
     overlap, stitch into one spectrum, and (optionally) convert to JWST units.

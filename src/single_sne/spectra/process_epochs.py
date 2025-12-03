@@ -1,5 +1,4 @@
 from __future__ import annotations
-from pathlib import Path
 import numpy as np
 import astropy.units as u
 import pandas as pd
@@ -12,13 +11,13 @@ from .spectra import to_fnu_mjy, bin_spectrum
 from single_sne.units import nm_to_angstrom, angstrom_to_micron, INSTRUMENT_UNITS
 from .stitching import _scale_in_overlap
 
-from pathlib import Path
+import pathlib
 from typing import Iterable
 
 
-def _iter_files(d: Path, patterns: Iterable[str] | str = ("*.dat", "*.fits")):
+def _iter_files(d: pathlib.Path, patterns: Iterable[str] | str = ("*.dat", "*.fits")):
     # Coerce a single string into a tuple of one pattern
-    if isinstance(patterns, (str, Path)):
+    if isinstance(patterns, (str, pathlib.Path)):
         patterns = (str(patterns),)
     for pat in patterns:
         for p in d.glob(pat):
@@ -86,15 +85,15 @@ def parts_to_dataframe(parts_subset, df = None, debug = False):
     return df_out.reset_index(drop=True)
 
 def process_epoch(
-    epoch_dir: str | Path,
-    outdir: str | Path,
+    epoch_dir: str | pathlib.Path,
+    outdir: str | pathlib.Path,
     *,
     debug=False,
     show = False,
 ):
     """Walk epoch_dir, build stitched spectrum (converting to JWST units if present, else SALT/FLAMINGOS units), saves converted stitched spectrum to outdir."""
-    epoch_dir = Path(epoch_dir)
-    outdir = Path(outdir)
+    epoch_dir = pathlib.Path(epoch_dir)
+    outdir = pathlib.Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
     
     parts = []
@@ -393,14 +392,14 @@ def process_epoch(
             
         
 
-def process_all_epochs(root: str | Path, outdir: str | Path, *, debug=False):
+def process_all_epochs(root: str | pathlib.Path, outdir: str | pathlib.Path, *, debug=False):
     """
     Walk `root` (with Epoch1/, Epoch2/, ...) and build stitched spectra per epoch.
     Saves <epoch>_combined.dat, .png, .pdf into `outdir/<epoch>/`.
     Returns a dict: { "Epoch1": (wave, flux), ... } with astropy Quantities.
     """
-    root = Path(root)
-    outdir = Path(outdir)
+    root = pathlib.Path(root)
+    outdir = pathlib.Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
 
     results = {}

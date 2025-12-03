@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 from dataclasses import dataclass
-from pathlib import Path
+import pathlib
 from typing import List, Optional, Sequence, Tuple
 from scipy.interpolate import interp1d, UnivariateSpline
 from single_sne.pseudobol_lightcurve.aux import rd_lcbol_data, al_av, build_time_grid, build_time_grid_all, estimate_ni_mass, estimate_56ni_alt
@@ -16,11 +16,11 @@ from single_sne.pseudobol_lightcurve.dataclasses import LightCurveHeader, Filter
 #----------------------------------------------------------------
 
 
-def read_pbinfo(pbinfo_path: str | Path) -> List[PassbandInfo]:
+def read_pbinfo(pbinfo_path: str | pathlib.Path) -> List[PassbandInfo]:
     """
     Read pbinfo.dat equivalent to IDL READCOL with format 'a,d,d,d'.
     """
-    pbinfo_path = Path(pbinfo_path).expanduser()
+    pbinfo_path = pathlib.Path(pbinfo_path).expanduser()
     names: list[str] = []
     lambda_eff: list[float] = []
     ew: list[float] = []
@@ -443,22 +443,22 @@ def _interp_mag_any(
         return y_out, yerr_out
 
 def mklcbol(
-    infile: str | Path,
-    pbinfo: str | Path = "~/idl/lcbol/pbinfo.dat",
+    infile: str | pathlib.Path,
+    pbinfo: str | pathlib.Path = "~/idl/lcbol/pbinfo.dat",
     bands: Optional[str | Sequence[str]] = None,
     interpmeth: str = "g",   # 'l', 'g', 'u', 's' (linear, gaussian process, quad, spline)
     dtinterp: float = 3.0,   # currently not used here (same as IDL)
     batch: bool = True,      # True = non-interactive
-    fout: Optional[str | Path] = None,
-) -> Path:
+    fout: Optional[str | pathlib.Path] = None,
+) -> pathlib.Path:
     """
     Python port of mklcbol.pro *without* interactive GUI.
 
     Returns the path of the created bolometric light curve file.
     """
 
-    infile = Path(infile)
-    pbinfo = Path(pbinfo).expanduser()
+    infile = pathlib.Path(infile)
+    pbinfo = pathlib.Path(pbinfo).expanduser()
 
     # ---------------------------------------------------------------
     # Read in input data (hdr, lcdata)
@@ -727,7 +727,7 @@ def mklcbol(
         outname = f"{hdr.name}_lcbol_{shortnames_selected}.dat"
         fout = infile.parent / outname   # <— save next to the input file
 
-    fout = Path(fout)
+    fout = pathlib.Path(fout)
     
     
     

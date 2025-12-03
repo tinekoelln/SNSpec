@@ -1,5 +1,5 @@
 from __future__ import annotations
-from pathlib import Path
+import pathlib
 from typing import Union
 import numpy as np
 import matplotlib.pyplot as plt
@@ -22,7 +22,7 @@ import numpy as np
 import astropy.units as u
 from typing import Optional, Tuple
 
-PathLike = Union[str, Path]
+PathLike = Union[str, pathlib.Path]
 
 def read_flamingos_dat(
     path:PathLike,

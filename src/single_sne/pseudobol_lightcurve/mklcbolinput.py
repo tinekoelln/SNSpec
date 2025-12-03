@@ -25,7 +25,7 @@ For SN2025cy we’ll typically combine:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from pathlib import Path
+import pathlib
 from typing import Optional, Sequence
 
 from datetime import datetime, UTC
@@ -68,7 +68,7 @@ class ExtinctionInfo:
 # Utility: read BlackGEM photometry
 # -----------------------------------
 
-def read_blackgem_csv(path: str | Path) -> pd.DataFrame:
+def read_blackgem_csv(path: str | pathlib.Path) -> pd.DataFrame:
     """
     Read BlackGEM photometry from a CSV file with columns:
 
@@ -79,7 +79,7 @@ def read_blackgem_csv(path: str | Path) -> pd.DataFrame:
 
     Magnitudes are in AB.
     """
-    path = Path(path)
+    path = pathlib.Path(path)
     df = pd.read_csv(path)
 
     # make sure names are exactly what we expect
@@ -119,7 +119,7 @@ UVOT_FILTER_MAP = {
     "uvm2": "uvm2_Swift",
 }
 
-def read_uvot_ab_txt(path: str | Path) -> pd.DataFrame:
+def read_uvot_ab_txt(path: str | pathlib.Path) -> pd.DataFrame:
     """
     Read Swift UVOT photometry (already in AB mags) from a text file with columns:
 
@@ -128,7 +128,7 @@ def read_uvot_ab_txt(path: str | Path) -> pd.DataFrame:
     Returns a DataFrame with columns:
         ['mjd', 'mag', 'magerr', 'pb_name']
     """
-    path = Path(path)
+    path = pathlib.Path(path)
 
     df = pd.read_csv(
         path,
@@ -189,13 +189,13 @@ def get_ned_ebv(name: str) -> Optional[float]:
 # -----------------------------------
 
 def build_mklcbol_input(
-    outfile: str | Path,
+    outfile: str | pathlib.Path,
     sn_name: str,
-    bg_csv: str | Path | None = None,
-    uvot_txt: str | Path | None = None,
+    bg_csv: str | pathlib.Path | None = None,
+    uvot_txt: str | pathlib.Path | None = None,
     extinction: Optional[ExtinctionInfo] = None,
     ned_name: Optional[str] = None,
-) -> Path:
+) -> pathlib.Path:
     """
     Build an mklcbol-compatible input file for `mklcbol` from
     BlackGEM and Swift UVOT AB photometry.
@@ -222,7 +222,7 @@ def build_mklcbol_input(
     Path
         Path of the created file.
     """
-    outfile = Path(outfile)
+    outfile = pathlib.Path(outfile)
 
     if extinction is None:
         extinction = ExtinctionInfo()

@@ -1,7 +1,7 @@
 from __future__ import annotations
 import numpy as np
 import matplotlib.pyplot as plt
-from pathlib import Path
+import pathlib
 import pandas as pd
 import astropy.units as u
 import scienceplots
@@ -28,8 +28,8 @@ def load_combined_spectrum(path, debug = False):
     except Exception as e:
         print(f"[load_combined_spectrum]ERROR: {e}")
 
-def plot_epoch(epoch_dir: str | Path,
-    outdir: str | Path,
+def plot_epoch(epoch_dir: str | pathlib.Path,
+    outdir: str | pathlib.Path,
     *,
     debug=False,
     show = False,
@@ -40,8 +40,8 @@ def plot_epoch(epoch_dir: str | Path,
     - Plot combined in black
     """
     
-    epoch_dir = Path(epoch_dir)
-    outdir = Path(outdir)
+    epoch_dir = pathlib.Path(epoch_dir)
+    outdir = pathlib.Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
     
     

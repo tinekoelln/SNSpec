@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 import matplotlib.pyplot as plt
-from pathlib import Path
+import pathlib
 import pandas as pd
 import astropy.units as u
 from astropy.units import Quantity
@@ -13,7 +13,7 @@ from single_sne.plotting.plot_helpers import setup_science_style  # wherever you
 setup_science_style()
 
 
-def load_combined_spectrum(path, debug = False):
+def load_combined_spectrum(path:pathlib.Path, debug = False):
     if debug: print(f"\n\n\n[load_combine_spectrum]")
     # column 0: instrument (string)
     try:
@@ -31,8 +31,8 @@ def load_combined_spectrum(path, debug = False):
     except Exception as e:
         print(f"[load_combined_spectrum]ERROR: {e}")
 
-def plot_all_epochs(root: str | Path,
-    outdir: str | Path,
+def plot_all_epochs(root: str | pathlib.Path,
+    outdir: str | pathlib.Path,
     *,
     debug=False,
     show = False,
@@ -43,8 +43,8 @@ def plot_all_epochs(root: str | Path,
     - Plot combined in black
     """
     
-    root = Path(root)
-    outdir = Path(outdir)
+    root = pathlib.Path(root)
+    outdir = pathlib.Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
 
     spectra = []
