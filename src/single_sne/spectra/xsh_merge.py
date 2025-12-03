@@ -1,7 +1,8 @@
 # single_sne/spectra/xsh_merge.py
 from __future__ import annotations
 import numpy as np
-import astropy.units as u, Quantity
+import astropy.units as u
+from astropy.units import Quantity
 from .stitching import stitch_arms
 
 __all__ = ["merge_uvb_vis_nir",
