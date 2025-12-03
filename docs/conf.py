@@ -1,4 +1,5 @@
 from datetime import datetime
+from sphinx.application import Sphinx
 
 project = "SNSpec"
 author = "Cristine Koelln"
@@ -93,8 +94,14 @@ def process_all_docstrings(app, what, name, obj, options, lines):
     cleaned = clean_docstring("\n".join(lines))
     lines[:] = cleaned.split("\n")
 
+def skip_pathlib_path(app, what, name, obj, skip, options):
+    # Skip documenting pathlib.Path so we don't get duplicate object descriptions
+    if name in ("pathlib._local.Path", "pathlib.Path"):
+        return True
+    return skip
 
 def setup(app):
     # Run our cleaner **after** autodoc retrieves docstrings
     app.connect("autodoc-process-docstring", process_all_docstrings)
+    app.connect("autodoc-skip-member", skip_pathlib_path)
     return {"version": "0.1", "parallel_read_safe": True}

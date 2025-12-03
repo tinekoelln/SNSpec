@@ -8,6 +8,7 @@ scienceplots
 scikit-learn
 beautifulsoup4
 sphinx
+sphinx-rtd-theme
 furo
 sphinx-autodoc-typehints
 
