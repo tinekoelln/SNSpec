@@ -117,7 +117,7 @@ def drop_high_variance_spikes(
     window : int
         Kernel size for median filter (must be odd). Controls baseline smoothness.
     sigma : float
-        Robust threshold in units of MAD (≈σ for Gaussian): |resid| > sigma * 1.4826*MAD -> spike.
+        Robust threshold in units of MAD (≈σ for Gaussian): residuals > sigma * 1.4826*MAD -> spike.
     replace : bool
         If True, replace spikes in-place; if False, drop them entirely.
     replace_with : {"median","interp"}

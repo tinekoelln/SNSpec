@@ -5,7 +5,7 @@ import astropy.units as u
 from specutils import Spectrum
 from pathlib import Path
 from astropy.units import Quantity
-from typing import Tuple, Optional, Union
+from typing import Tuple, Optional, Any
 
 from single_sne.units import INSTRUMENT_UNITS
 from single_sne.io.flamingos import read_flamingos_dat
@@ -481,7 +481,8 @@ def combine_salt_dir(sa_dir: Path, *, jwst_units: bool = False, debug: bool = Fa
     if debug: print(f"Files found: {list(salt_files)}")
     if not salt_files:
         raise FileNotFoundError("No SALT .dat files found")
-
+    FU = INSTRUMENT_UNITS["SALT"][1]
+    WU = INSTRUMENT_UNITS["SALT"][0]
     # 1) read all SALT pieces (Å, erg/s/cm^2/Å)
     segs = []
     for dat in salt_files:

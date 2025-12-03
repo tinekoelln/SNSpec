@@ -1,5 +1,6 @@
 from __future__ import annotations
 from pathlib import Path
+from typing import Union
 import numpy as np
 import matplotlib.pyplot as plt
 from astropy.io import fits
@@ -21,8 +22,10 @@ import numpy as np
 import astropy.units as u
 from typing import Optional, Tuple
 
+PathLike = Union[str, Path]
+
 def read_flamingos_dat(
-    path,
+    path:PathLike,
     *,
     as_quantity: bool = True,
     require_increasing: Literal["strict", "sort", "warn"] = "strict",

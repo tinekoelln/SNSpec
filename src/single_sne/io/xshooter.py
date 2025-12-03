@@ -9,16 +9,15 @@ from astropy.io import fits
 from pdb import set_trace as stop
 import scienceplots
 plt.style.use(['science'])
-from pathlib import Path
 import astropy.units as u
-from typing import Literal, Tuple, Optional
+from typing import Literal, Tuple, Optional, Union
 from single_sne.units import XSH_FLUX_UNIT
 from single_sne.units import INSTRUMENT_UNITS
 from single_sne.io.clean_data import clean_data
 from single_sne.spectra.spectra import is_strictly_increasing
 WAVE_UNIT = INSTRUMENT_UNITS["XSHOOTER"][0]
 FLUX_UNIT = INSTRUMENT_UNITS["XSHOOTER"][1]
-
+PathLike = Union[str, Path]
 __all__ = [
     "discover_merge1d_files",
     "read_primary_linear_wcs",
@@ -33,12 +32,12 @@ def _get_header_value(hdr, keys, default=""):
 
 
 def discover_merge1d_files(
-    root: str | Path = ".",
+    root: PathLike = ".",
     *,
     product_mode: str = "SCI",         # "SCI" | "TELL" | "ANY"
     prefer_end_products: bool = True,
     allow_tmp: bool = False,
-) -> dict[str, Path]:
+) -> dict[str, PathLike]:
     paths = sorted(Path(root).glob("**/*_FLUX_MERGE1D_*.fits"))
     if not paths:
         return {}
@@ -62,7 +61,7 @@ def discover_merge1d_files(
         if arm:
             arms[arm].append(p)
 
-    def prefer_end(arr: list[Path]) -> list[Path]:
+    def prefer_end(arr: list[PathLike]) -> list[PathLike]:
         if prefer_end_products:
             end = [p for p in arr if "reflex_end_products" in str(p)]
             return end or arr
@@ -90,7 +89,7 @@ def make_quality_mask(qual, bad_bits=(1, 2, 4, 8, 16)):
         bad_mask |= (qual & bit) != 0
     return ~bad_mask
 
-def read_primary_linear_wcs(path: str | Path, ext: int = 0, debug = False, clean = False, show=False, etc = False) -> tuple[u.Quantity, u.Quantity, fits.Header]:
+def read_primary_linear_wcs(path: PathLike, ext: int = 0, debug = False, clean = False, show=False, etc = False) -> tuple[u.Quantity, u.Quantity, fits.Header]:
     """
     Read MERGE1D PrimaryHDU with linear WCS (CRVAL1, CDELT1, CRPIX1).
     Returns wavelength in nm and flux in native units (no unit in header → dimensionless).
@@ -180,7 +179,7 @@ def _get_object_date(hdr):
     return obj, date_for_title, date_for_file
 
 def read_xshooter_dat(
-    path,
+    path: PathLike,
     *,
     as_quantity: bool = True,
     require_increasing: Literal["strict", "sort", "warn"] = "strict",
@@ -264,8 +263,7 @@ def read_xshooter_dat(
         return w, f, fixed
     
     
-def group_tellurics_by_star(arms: dict[str, list[Path]]):
-    from pathlib import Path
+def group_tellurics_by_star(arms: dict[str, list[PathLike]]):
     from collections import defaultdict 
     """
     arms: {"VIS": [Path(...), ...], "NIR": [...], ...}
@@ -283,7 +281,7 @@ def group_tellurics_by_star(arms: dict[str, list[Path]]):
     # turn nested default dicts into plain dicts (optional, just for cleanliness)
     return {star: dict(arm_dict) for star, arm_dict in by_star.items()}
 
-def _obs_mjd(path: Path) -> float:
+def _obs_mjd(path: PathLike) -> float:
     """Get observation time in MJD from a MERGE1D FITS file."""
     from pathlib import Path
     import numpy as np

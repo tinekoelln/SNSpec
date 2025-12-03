@@ -3,11 +3,11 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import astropy.units as u
-from pathlib import Path
-from typing import Iterable
+from typing import Iterable, Union
+PathLike = Union[str, Path]
 
 
-def _iter_files(d: Path, patterns: Iterable[str] | str = ("*.dat", "*.fits")):
+def _iter_files(d: PathLike, patterns: Iterable[str] | str = ("*.dat", "*.fits")):
     # Coerce a single string into a tuple of one pattern
     if isinstance(patterns, (str, Path)):
         patterns = (str(patterns),)
@@ -30,7 +30,7 @@ def find_lightcurve(root, debug=False):
     return lcdir, curves_list
     
 
-def read_lightcurve(path, debug=False):
+def read_lightcurve(path: PathLike, debug=False):
     # Receives path to the lightcurve, outputs dataframe with mjd, mag, err, filter, substracted
     lightcurve_df = pd.read_csv(path, sep = ' ')
     return lightcurve_df

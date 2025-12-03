@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from astropy.io import fits
 import astropy.units as u
-from typing import Literal, Tuple, Optional
+from typing import Literal, Tuple, Optional, Union
 from single_sne.units import INSTRUMENT_UNITS
 from single_sne.spectra.spectra import is_strictly_increasing
 from single_sne.io.clean_data import clean_data
@@ -17,9 +17,9 @@ __all__ = [
     "object_and_date_from_header",
 ]
 
-
+PathLike = Union[str, Path]
 def read_salt_dat(
-    path,
+    path: PathLike,
     *,
     as_quantity: bool = True,
     require_increasing: Literal["strict", "sort", "warn"] = "strict",

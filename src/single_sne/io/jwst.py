@@ -14,26 +14,49 @@ PathLike = Union[str, Path]
 
 def read_jwst_df(path: PathLike, as_quantity: bool = True, debug = False) -> pd.DataFrame:
     """
-    Read a 2-column JWST ASCII file into a pandas DataFrame.
+    Read a JWST ASCII spectrum into a :class:`pandas.DataFrame`.
 
-    Expected format:
-    - two whitespace-separated columns: wavelength[um], flux[mJy]
-    - lines starting with '#' are ignored
+    The input file is expected to contain **two or three whitespace-separated columns**:
+
+    - wavelength in microns (µm)
+    - flux in mJy
+    - optional flux uncertainty in mJy
+
+    Lines beginning with ``#`` are ignored.
+
+    Parameters
+    ----------
+    path : Path-like
+        Location of the JWST ASCII file.
+    as_quantity : bool, optional
+        If ``True`` (default), convert wavelength and flux columns into
+        `astropy.units.Quantity` arrays (µm and mJy respectively).
+    debug : bool, optional
+        If ``True``, print debug information.
+
     Returns
     -------
-    Read JWST ASCII spectrum (2 or 3 columns).
-    Returns a DataFrame whose columns are either plain floats (default µm/mJy)
-    or Quantity columns if as_quantity=True.
+    pandas.DataFrame
+        A DataFrame with columns:
+
+        - ``wavelength_um`` : float or Quantity
+        - ``flux_mJy`` : float or Quantity
+        - ``flux_err_mJy`` (optional) : float or Quantity
+
+        The DataFrame is sorted by wavelength, and completely NaN
+        uncertainty columns are dropped.
+
+    Notes
+    -----
+    The function accepts files with either two or three numeric columns.
+    If only two columns are present, the uncertainty column is removed.
     """
     #p = Path(path).expanduser().resolve()
     #if debug: print(p)
     #if not p.exists():
         #raise FileNotFoundError(f"JWST file not found: {p}")
-
     if debug:
         print(f"Path obtained: {path}")
-
-    
     df = pd.read_csv(
         path,
         sep=r"\s+",
@@ -46,17 +69,14 @@ def read_jwst_df(path: PathLike, as_quantity: bool = True, debug = False) -> pd.
     ).dropna()
     df = df.sort_values(by="wavelength_um")
     df.reset_index(inplace = True, drop=True)
-
     if debug: 
         print(f"[read_jwst_df]: DataFrame read")
     # If only 2 columns present, the third will be NaN; drop it if entirely NaN
     if "flux_err_mJy" in df and df["flux_err_mJy"].isna().all():
         df = df.drop(columns=["flux_err_mJy"])
-
     # Basic sanity: at least 2 columns remaining
     if not {"wavelength_um", "flux_mJy"}.issubset(df.columns):
                 raise ValueError(f"Expected at least two numeric columns in {df}, got {df.columns}")
-
     if as_quantity:
             # Replace float columns by Quantity columns (pandas Series of Quantity)
             df["wavelength_um"] = df["wavelength_um"].to_numpy() * u.um

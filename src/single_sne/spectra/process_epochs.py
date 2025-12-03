@@ -27,16 +27,39 @@ def _iter_files(d: Path, patterns: Iterable[str] | str = ("*.dat", "*.fits")):
 
 def parts_to_dataframe(parts_subset, df = None, debug = False):
     """
-    Append one (instrument, wavelength, flux[, flux_error]) tuple to a pandas DataFrame.
+    Convert a list of spectral parts into a single pandas DataFrame.
 
-    parts_subset is expected to be either:
-        (tag, w, f)                       → no flux error
-        (tag, w, f, ferr)                 → with flux error
-    All wavelength/flux arrays must have the same length.
+    This function takes a collection of instrument-specific spectral
+    components (for example, the individual arm extractions from X-shooter,
+    SALT, or FLAMINGOS-2) and merges them into a uniform tabular format.
 
-    Returns a new DataFrame with columns:
-        instrument, wavelength, flux, flux_error
-    Missing flux_error values are filled with NaN.
+    Parameters
+    ----------
+    parts : sequence
+        Iterable of objects representing extracted spectral segments.
+        Each element must contain wavelength, flux, and (optionally) error
+        arrays in a consistent format.
+    instrument : str
+        Name of the instrument (e.g. ``"XSHOOTER"``, ``"SALT"``,
+        ``"FLAMINGOS2"``). Used to determine units and column names.
+    debug : bool, optional
+        If ``True``, print diagnostic information while processing.
+
+    Returns
+    -------
+    pandas.DataFrame
+        A DataFrame containing at minimum the following columns:
+
+        - ``wavelength`` : Quantity or float array
+        - ``flux`` : Quantity or float array
+        - ``flux_err`` : Quantity or float array (if available)
+
+        Additional instrument-dependent metadata may be included as well.
+
+    Notes
+    -----
+    All input spectral parts must share a consistent unit system or be
+    convertible to one. The output table is sorted by wavelength.
     """
     if debug: 
         print(f"[parts_to_dataframe] Shape of existing dataframe: {df.shape}")
