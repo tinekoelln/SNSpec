@@ -2,22 +2,15 @@ from __future__ import annotations
 from pathlib import Path
 import numpy as np
 import astropy.units as u
-import matplotlib.pyplot as plt
-from astropy.units import Quantity
 import pandas as pd
-from astropy.table import Table
 from astropy.constants import c
 # ---- import own helpers ----
-from single_sne.spectra.stitching import stitch_arms, combine_salt_dir, combine_flamingos_dir
+from .stitching import combine_salt_dir, combine_flamingos_dir
 from single_sne.io.jwst import read_jwst_arrays # your existing JWST reader
 from single_sne.io.xshooter import read_xshooter_dat
-from single_sne.units import INSTRUMENT_UNITS
-from single_sne.spectra.spectra import to_fnu_mjy, is_strictly_increasing, bin_spectrum
+from .spectra import to_fnu_mjy, bin_spectrum
 from single_sne.units import nm_to_angstrom, angstrom_to_micron, INSTRUMENT_UNITS
-from single_sne.spectra.stitching import _scale_in_overlap
-
-
-
+from .stitching import _scale_in_overlap
 
 from pathlib import Path
 from typing import Iterable
@@ -141,7 +134,7 @@ def process_epoch(
         telescopes_listed.append("JWST")
         if debug: print(f"Beginning JWST Handling")
         for datafile in _iter_files(jw, patterns = ("*.dat",)):
-            if debug: print(f"[DEBUG]: JWST files: {list(_iter_files(jw, patterns = ('*.dat',)))}")
+            if debug: print(f"[DEBUG]: JWST files: {list(_iter_files(jw, patterns = ('*.dat')))}")
             try:
                 if debug: print(f"[DEBUG] Getting JWST wavelengths and fluxes...")
                 w_jw, f_jw, _ = read_jwst_arrays(datafile, debug=debug)       # Quantities
