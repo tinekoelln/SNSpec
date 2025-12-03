@@ -10,11 +10,12 @@ import requests
 from bs4 import BeautifulSoup
 from astropy.constants import c 
 import astropy.units as u
+from astropy.units import Unit
 from astropy.cosmology import FlatLambdaCDM
 
 
-C_KM_S = c.to(u.km/u.s).value
-
+KM_PER_S = Unit("km / s")
+C_KM_S = c.to(KM_PER_S).value
 
 def rd_lcbol_data(infile: str | Path, debug = False) -> Tuple[LightCurveHeader, List[FilterLightCurve]]:
     """

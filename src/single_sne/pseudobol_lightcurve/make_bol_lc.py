@@ -7,8 +7,7 @@ from typing import List, Optional, Sequence, Tuple
 from scipy.interpolate import interp1d, UnivariateSpline
 from single_sne.pseudobol_lightcurve.aux import rd_lcbol_data, al_av, build_time_grid, build_time_grid_all, estimate_ni_mass, estimate_56ni_alt
 from single_sne.pseudobol_lightcurve.dataclasses import LightCurveHeader, FilterLightCurve, PassbandInfo
-from sklearn.gaussian_process import GaussianProcessRegressor
-from sklearn.gaussian_process.kernels import ConstantKernel, RBF
+
 
 
 
@@ -240,6 +239,8 @@ def _interp_mag_gp(
     yerr : array
         GP 1σ uncertainty at time_interp.
     """
+    from sklearn.gaussian_process import GaussianProcessRegressor
+    from sklearn.gaussian_process.kernels import ConstantKernel, RBF
     # sort by time
     order = np.argsort(time)
     t = np.asarray(time[order], dtype=float)
@@ -325,6 +326,8 @@ def _interp_mag_any(
     yerr : array
         Interpolated magnitude errors at time_interp (approximate for 'u'/'s').
     """
+    from sklearn.gaussian_process import GaussianProcessRegressor
+    from sklearn.gaussian_process.kernels import ConstantKernel, RBF
 
     # Ensure sorted, unique x for interpolation
     idx = np.argsort(time)
