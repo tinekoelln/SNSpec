@@ -215,8 +215,8 @@ def al_av(
         Total-to-selective extinction R_V. Default 3.1.
     rverr : float or None, optional
         Uncertainty on R_V. If provided, the function returns
-        (AlAv, AlAv_err) where AlAv_err = AlAv * rverr / r_v,
-        exactly like the IDL function.
+        (AlAv, AlAv_err) where AlAv_err = AlAv * rverr / r_v
+    
     Returns
     -------
     AlAv : float
@@ -380,18 +380,30 @@ def build_time_grid(
     tmax = np.inf
     mags = []
     magerrs = []
-    
+    print(f"Check time inputs:")
     for i, sel in enumerate(selected_idx):
-        if not sel:
-            continue
-        tt = lcdata[i].time
-        mm = lcdata[i].mag
-        merr = lcdata[i].magerr
+        if sel:
+            formatted = [f"{t:.4f}" for t in lcdata[i].time[:10]]
+            print(i, formatted)
+        
+    rrselect = np.where(selected_idx)[0]
+    
+    print(f"\n\n\n-------SANITY CHECK build_time_grid-------")
+    print(f"selected_idx: {selected_idx}")
+    print(f"Length of lightcurve data:", len(lcdata))
+    
+    for idx in rrselect:
+        tt = lcdata[idx].time
+        mm = lcdata[idx].mag
+        merr = lcdata[idx].magerr
+
         tmin = max(tmin, np.min(tt))
         tmax = min(tmax, np.max(tt))
+
         times.append(tt)
         mags.append(mm)
         magerrs.append(merr)
+
 
     if not times:
         raise RuntimeError("No selected filters with time data")
@@ -404,12 +416,13 @@ def build_time_grid(
     mm = marr[mask]
     ee = earr[mask]
     
-    tol = 0.2
-    merged_time,_, _ = merge_close_times(tt, mm, ee, tol) 
-    
+    #tol = 0.2
+    #merged_time,_, _ = merge_close_times(tt, mm, ee, tol) 
     
     #time_interp = merged_time
     time_interp = np.unique(np.sort(tt))
+    print(f"tmin: {tmin}, tmax: {tmax}")
+    print(f"time_interp;",[f"{t:.3f}" for t in time_interp])
     print(f"\n\n\n\nLength of time array: {len(time_interp)}")
     #time_interp = np.linspace(tmin, tmax, len(tt))
 
