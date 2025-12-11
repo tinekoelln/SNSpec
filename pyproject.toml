@@ -11,7 +11,7 @@ readme = "README.md"
 # Recommend widening Python a bit so colleagues/envs can install it.
 requires-python = ">=3.10"
 
-authors = [{ name = "Your Name" }]
+authors = [{ name = "Cristine Koelln" }]
 license = { text = "Proprietary" }  # or "BSD-3-Clause", etc.
 classifiers = [
   "Programming Language :: Python :: 3",

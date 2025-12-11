@@ -11,4 +11,5 @@ sphinx
 sphinx-rtd-theme
 furo
 sphinx-autodoc-typehints
+pyqt5
 
